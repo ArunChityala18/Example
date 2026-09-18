@@ -1,2 +1,44 @@
 Hello
 dlgjnfkjfnkjfnjfnvfjnv
+
+# Password Strength Validation Functions
+
+def check_password_strength(password):
+    """
+    Checks the strength of a given password.
+    Returns a string indicating strength: 'Weak', 'Medium', or 'Strong'.
+    """
+    if not isinstance(password, str):
+        return 'Invalid'
+    
+    length = len(password)
+    has_lower = any(c.islower() for c in password)
+    has_upper = any(c.isupper() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(not c.isalnum() for c in password)
+    
+    score = sum([has_lower, has_upper, has_digit, has_special])
+    
+    if length < 8:
+        return 'Weak'
+    elif length >= 12 and score >= 4:
+        return 'Strong'
+    elif score >= 3:
+        return 'Medium'
+    else:
+        return 'Weak'
+
+def validate_password_policy(password):
+    """
+    Validates if the password meets the minimum security policy.
+    Minimum 8 characters, at least one uppercase, one lowercase, and one number.
+    """
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not any(c.isupper() for c in password):
+        return False, "Password must contain at least one uppercase letter."
+    if not any(c.islower() for c in password):
+        return False, "Password must contain at least one lowercase letter."
+    if not any(c.isdigit() for c in password):
+        return False, "Password must contain at least one number."
+    return True, "Password is valid."
